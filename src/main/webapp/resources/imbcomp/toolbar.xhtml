@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="crudBean" required="true" type="br.edu.iftm.imobiliaria.bean.CrudBean"
+                      shortDescription="Classe CRUD para os botões funcionarem"
+                      ></cc:attribute>
+        <cc:facet name="componenteExtra" ></cc:facet>
+        
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Novo" update="@form"
+                                 icon="fas fa-file" actionListener="#{cc.attrs.crudBean.novo()}"></p:commandButton>
+                <p:commandButton value="Salvar" action="#{cc.attrs.crudBean.salvar()}"
+                                 icon="fas fa-save" update="@form"
+                                 rendered="#{cc.attrs.crudBean.estado.name() != 'BUSCAR'}"></p:commandButton>
+
+                <p:commandButton value="#{cc.attrs.crudBean.estado.name() == 'BUSCAR'?'Buscar':'Voltar'}" action="#{cc.attrs.crudBean.buscar()}"
+                                 update="@form" icon="fas #{cc.attrs.crudBean.estado.name() == 'BUSCAR'?'fa-search':'fa-backward'}"></p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <cc:insertChildren />
+            </p:toolbarGroup>
+        </p:toolbar>
+        <cc:insertFacet name="componenteExtra"></cc:insertFacet>
+        <p:spacer height="10px"></p:spacer>
+    </cc:implementation>
+</html>

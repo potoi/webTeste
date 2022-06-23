@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/projetoWebteste/">
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="web_tarefa" password="root" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/web_tarefa?zeroDateTimeBehavior=CONVERT_TO_NULL" username="root"/>
+</Context>
