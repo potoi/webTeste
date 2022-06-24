@@ -6,8 +6,11 @@ package com.mycompany.projetowebteste.repository;
 
 import com.mycompany.projetowebteste.model.Tarefa;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -18,7 +21,7 @@ public class Repository implements Serializable {
     @Inject
     private EntityManager entityManager;
 
-    private Class<Tarefa> entityClass;
+    private Class<Tarefa> entityClass = Tarefa.class;
 
     public Tarefa salvar(Tarefa entidade) {
         entityManager.getTransaction().begin();
@@ -32,6 +35,34 @@ public class Repository implements Serializable {
         Tarefa entidade = entityManager.find(entityClass, id);
         entityManager.remove(entidade);
         entityManager.getTransaction().commit();
+    }
+
+    public void concluir(int id) {
+        entityManager.getTransaction().begin();
+        Tarefa entidade = entityManager.find(entityClass, id);
+        Query query = entityManager.createQuery("update Tarefa t set t.concluido = true where t.id = :id", Tarefa.class);
+        query.setParameter("id", entidade.getId());
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
+    public List<Tarefa> buscar() {
+        try {
+            List<Tarefa> entidades = entityManager.createQuery("select t from Tarefa t order by t.concluido,t.dataEntrega", Tarefa.class).getResultList();
+            return entidades;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public String getEntityClassName() {
+        return this.entityClass.getCanonicalName();
+    }
+
+    public Tarefa findById(int id) {
+        Tarefa entidade = entityManager.find(entityClass, id);
+        return entidade;
     }
 
 }

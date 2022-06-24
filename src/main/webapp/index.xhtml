@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <meta charset="UTF-8"/>
         <title>Teste </title>
@@ -10,32 +11,56 @@
 
     </h:head>
     <h:body>
+        <p:commandButton value="Novo" type="button" onclick="PF('dlg1').show();" />
+        <p:dialog header="Nova Tarefa" modal="true" widgetVar="dlg1" minHeight="40">
 
-        <div style="background-color:blue;padding:4px;" >
-            <div style="background-color: red;margin-top: 10px;">asasd</div>
-            <div style="background-color: red;margin-top: 10px;">#{tarefaBean.hello}</div>
-        </div>
+            <h:form>
 
-        <h:form>
+                <p:panelGrid columns="2">
 
-            <p:panelGrid columns="3">
+                    <p:outputLabel for="txtSobrenome" value="Descrição"></p:outputLabel>
+                    <p:inputText value="#{tarefaBean.entidade.descricao}"
+                                 id="txtSobrenome"></p:inputText>
 
-                <p:outputLabel for="txtSobrenome" value="Descrição"></p:outputLabel>
-                <p:inputText value="#{tarefaBean.entidade.descricao}"
-                             id="txtSobrenome"></p:inputText>
 
-                <!--  <div >
-                      <p:outputLabel for="navigator" value="Data Entrega"></p:outputLabel>
-                      <p:datePicker id="navigator" value="#{tarefaBean.entidade.dataEntrega}" 
-                                    monthNavigator="true" yearNavigator="true" showWeek="true"/>
-                  </div>
-                !-->
-                <h1> #{tarefaBean.hello}</h1>
-                <p:commandButton value="Salvar" action="#{tarefaBean.salvar()}"
-                                 icon="fas fa-save" 
-                                 ></p:commandButton>
+                    <p:outputLabel for="navigator" value="Data Entrega"></p:outputLabel>
+                    <p:datePicker id="navigator" value="#{tarefaBean.entidade.dataEntrega}" 
+                                  monthNavigator="true" yearNavigator="true" showWeek="true"/>
+                    <p:commandButton value="Salvar" action="#{tarefaBean.salvar()}"                                    
+                                     update=":lista"
+                                     ></p:commandButton>
+                </p:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <h:form id="lista">
+            <p:panelGrid columns="2">
+                <p:dataTable value="#{tarefaBean.entidades}" var="entidade">
+                    <p:column headerText="Descrição">
+                        <p:commandButton value="Remover" style="margin-left: 10px"                          
+                                         update="@form"  actionListener="#{tarefaBean.remover(entidade.id)}"></p:commandButton>
+                        <h:outputText value="#{entidade.descricao}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Data da Entrega">
+                        <h:outputText value="#{entidade.dataEntrega}">
+                            <f:convertDateTime dateStyle="short" ></f:convertDateTime>
+                        </h:outputText>
+
+                    </p:column>
+                    <p:column headerText="Concluído">
+                        <h:outputText value="#{entidade.concluido}"></h:outputText>
+                        <p:commandButton value="Mudar para concluído" style="margin-left: 10px"   
+                                         rendered="#{entidade.concluido == false}"
+                                         update="@form"  actionListener="#{tarefaBean.concluir(entidade.id)}"></p:commandButton>
+                    </p:column>
+
+
+                </p:dataTable>
+
             </p:panelGrid>
         </h:form>
+
     </h:body>
 </html>
 
