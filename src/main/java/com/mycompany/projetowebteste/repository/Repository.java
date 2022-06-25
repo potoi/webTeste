@@ -37,9 +37,8 @@ public class Repository implements Serializable {
         entityManager.getTransaction().commit();
     }
 
-    public void concluir(int id) {
+    public void concluir(Tarefa entidade) {
         entityManager.getTransaction().begin();
-        Tarefa entidade = entityManager.find(entityClass, id);
         Query query = entityManager.createQuery("update Tarefa t set t.concluido = true where t.id = :id", Tarefa.class);
         query.setParameter("id", entidade.getId());
         query.executeUpdate();

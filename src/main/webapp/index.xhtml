@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <meta charset="UTF-8"/>
-        <title>Teste </title>
+        <title>Tarefas </title>
 
 
     </h:head>
@@ -27,7 +27,7 @@
                     <p:datePicker id="navigator" value="#{tarefaBean.entidade.dataEntrega}" 
                                   monthNavigator="true" yearNavigator="true" showWeek="true"/>
                     <p:commandButton value="Salvar" action="#{tarefaBean.salvar()}"                                    
-                                     update=":lista"
+                                     update="@form :lista"
                                      ></p:commandButton>
                 </p:panelGrid>
 
@@ -52,7 +52,7 @@
                         <h:outputText value="#{entidade.concluido}"></h:outputText>
                         <p:commandButton value="Mudar para concluído" style="margin-left: 10px"   
                                          rendered="#{entidade.concluido == false}"
-                                         update="@form"  actionListener="#{tarefaBean.concluir(entidade.id)}"></p:commandButton>
+                                         update="@form"  actionListener="#{tarefaBean.concluir(entidade)}"></p:commandButton>
                     </p:column>
 
 
